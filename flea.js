@@ -2,6 +2,7 @@
 var legalCommands = [];
 var responseEngine = { };
 var helpText = { };
+var config = require('./config.json');
 
 function registerPlugin(command, functionToRun, helpTextPart) {
    responseEngine['@' + command.toUpperCase()] = functionToRun;
@@ -23,8 +24,10 @@ console.log("Plugins all loaded");
 
 // INIT IRC
 var irc = require('irc');
-var client = new irc.Client('hub.jawug.org.za', 'nodeFlea', {
-    channels: ['#botville'],
+var client = new irc.Client(config.server, config.botName, {
+	userName: config.username,
+	realName: config.realname,
+	channels: config.channels
 });
 
 client.addListener('message', function (from, to, message) {
