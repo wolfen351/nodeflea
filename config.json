@@ -1,0 +1,14 @@
+{
+    "server": "hub.jawug.org.za",
+    "port": 6667,
+    "botName": "nodeFleaTest",
+    "username": "nodeFlea",
+    "realname": "nodeFlea",
+
+
+    "channels": ["#botville", "#jawug"],
+    "nickserv": "nickserv",
+    "nickservPassword": "",
+
+    "tls": false
+}
