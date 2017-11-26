@@ -39,11 +39,15 @@ client.addListener('message', function (from, to, message) {
 
            /* Calc the other party */
            var otherParty = from;
+           var requestor = to;
            if (to.indexOf("#")>-1)
+           {
               otherParty = to;
+              requestor = from;
+           }
 
            /* Calc the response */
-           var response = responseEngine[command](message, otherParty);
+           var response = responseEngine[command](message, otherParty, requestor);
            console.log("Responding with " + response);
 
            /* Respond to PM with PM and channel message with channel message */
