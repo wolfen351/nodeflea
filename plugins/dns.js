@@ -26,21 +26,21 @@ function ChatModule () {
 			} );
 	  }
 	  else {
-		this.resolveDns(thingToPing);
+		this.resolveDns(thingToPing, dest);
 	  }
 	}
 
 
-	this.resolveDns = function(hostName)
+	this.resolveDns = function(hostName, dest)
 	{
 	  var ip;
 	  dns.resolve4(hostName, (err, addresses) => {
 		 if (err) 
 		   { 
-			  this.sendMessage("#botville", err);
+			  this.sendMessage(dest, err);
 			  return;
 		   }
-		 this.sendMessage("#botville", `Addresses on this hostname: ${addresses.join(", ")}`);
+		 this.sendMessage(dest, `Addresses on this hostname: ${addresses.join(", ")}`);
 	  });
 	}
 }

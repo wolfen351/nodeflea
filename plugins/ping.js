@@ -8,11 +8,11 @@ function ChatModule () {
     /* THIS METHOD WILL BE PROVIDED BY THE HOST - CALL IT TO SEND MESSAGES */
 	/* this.sendMessage = function(dest, message)                          */
 
-	this.pingTheAddress = function(hostname, ipToPing)
+	this.pingTheAddress = function(hostname, ipToPing, dest)
 	{
 		var self = this;
 		var headline = "PING "+hostname+" ("+ipToPing+").";
-		this.sendMessage("#botville", headline);
+		this.sendMessage(dest, headline);
 
 		var session = ping.createSession ({packetSize: 64, retries: 1});
 
@@ -21,7 +21,7 @@ function ChatModule () {
 			session.pingHost (ipToPing, function (error, target, sent, rcvd) {
 				var ms = rcvd - sent;
 				if (error)
-					self.sendMessage("#botville", target + ": " + error.toString() + "(ms=" + ms + ")");
+					self.sendMessage(dest, target + ": " + error.toString() + "(ms=" + ms + ")");
 				else
 					//	64 bytes from 8.8.8.8: icmp_seq=1 ttl=57 time=17.0 ms
 					self.sendMessage("#botville", "64 bytes from " + target + ": time="+ms+" ms");
@@ -43,29 +43,29 @@ function ChatModule () {
 		var ipToPing = words[1];
 		dns.reverse(ipToPing, function(err, hostnames) {
 			    if (hostnames)
-				  me.pingTheAddress(hostnames[0], ipToPing);
+				  me.pingTheAddress(hostnames[0], ipToPing, dest);
 				else 
-				  me.pingTheAddress(ipToPing, ipToPing);
+				  me.pingTheAddress(ipToPing, ipToPing, dest);
 			} );
 	  }
 	  else {
-		this.resolveDnsAndPing(thingToPing);
+		this.resolveDnsAndPing(thingToPing, dest);
 	  }
 	}
 
 
-	this.resolveDnsAndPing = function(hostName)
+	this.resolveDnsAndPing = function(hostName, dest)
 	{
 	  var ip;
 	  dns.resolve4(hostName, (err, addresses) => {
 		 if (err) 
 		   { 
-			  this.sendMessage("#botville", err);
+			  this.sendMessage(dest, err);
 			  return;
 		   }
 		 console.log(`addresses: ${JSON.stringify(addresses)}`);
 		 var ipToPing = addresses[0];
-		 this.pingTheAddress(hostName, ipToPing);
+		 this.pingTheAddress(hostName, ipToPing, dest);
 	  });
 	}
 }
