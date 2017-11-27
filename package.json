@@ -7,5 +7,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "checkservice": "^1.0.1",
+    "http": "0.0.0",
+    "irc": "^0.5.2",
+    "moment": "^2.19.2",
+    "net-ping": "^1.2.1"
+  }
 }

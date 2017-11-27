@@ -1,6 +1,4 @@
-/* time module for flea */
-
-var moment = require("moment")
+/* wget module for flea */
 
 function ChatModule () {
 	
@@ -13,14 +11,14 @@ function ChatModule () {
 
 	this.messageReceived = function(message, dest, source)
 	{
-		this.sendMessage(dest, "The current time is " + moment().format('Do MMMM YYYY, h:mm:ss A'));
+		//this.sendMessage(dest, "The current time is " + moment().format('Do MMMM YYYY, h:mm:ss A'));
 	}
 
 }
 
-exports.commandName = 'time';
+exports.commandName = 'wget';
 exports.module = new ChatModule();
-exports.helpText = '- Return the current time';
+exports.helpText = 'url - Download a html file';
 
 
 
