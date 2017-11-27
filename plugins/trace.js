@@ -17,26 +17,41 @@ function ChatModule () {
         self.sendMessage("#botville", target + ": Done");
 	}
 
-	function feedCb (error, target, ttl, sent, rcvd) {
-		var ms = rcvd - sent;
-		if (error) {
-			if (error instanceof ping.TimeExceededError) {
-				self.sendMessage("#botville", target + ": " + error.source + " (ttl=" + ttl + " ms=" + ms +")");
-			} else {
-				self.sendMessage("#botville", target + ": " + error.toString () + " (ttl=" + ttl + " ms=" + ms +")");
-			}
-		} else {
-			console.log (target + ": " + target + " (ttl=" + ttl + " ms=" + ms +")");
-		}
-	}
-
-	this.pingTheAddress = function(hostname, ipToPing, dest)
+	this.traceTheAddress = function(hostname, ipToPing, dest)
 	{
 		var self = this;
 
-		var session = ping.createSession ({packetSize: 64, retries: 1});
+   	    self.sendMessage(dest, "Tracing to " + ipToPing + " (" + hostname + ")");
 
-		session.traceRoute (ipToPing, 30, feedCb, doneCb);
+		var session = ping.createSession ({packetSize: 64, retries: 1});
+        var hop = 0;
+        
+		session.traceRoute (ipToPing, 30, function (error, target, ttl, sent, rcvd) {
+			var ms = rcvd - sent;
+			hop++;
+						
+			if (error) {
+				
+				dns.reverse(error.source, function(err, hostnames) {
+					if (hostnames)
+						if (error instanceof ping.TimeExceededError) {
+							self.sendMessage(dest, "Hop " + hop + ":  " + ms + "ms  " + error.source + " (" + hostnames[0] + ")"); // NORMAL CASE
+						} else {
+							self.sendMessage(dest, "Hop " + hop + ":  " + ms + "ms  " + error.message + " from " + error.source); // ANOTHER ERROR
+						}
+					else 
+						if (error instanceof ping.TimeExceededError) {
+							self.sendMessage(dest, "Hop " + hop + ":  " + ms + "ms  " + error.source); // NORMAL CASE
+						} else {
+							self.sendMessage(dest, "Hop " + hop + ":  " + ms + "ms  " + error.message + " from " + error.source); // ANOTHER ERROR
+						}
+				} );
+
+				
+			} else {
+					self.sendMessage(dest, "Hop " + hop + ":  " + ms + "ms  " + target + " (" + hostname + ")"); // FINAL HOP
+			}
+		}, doneCb);
 	}
 
 	this.messageReceived = function(message, dest, source)
@@ -52,9 +67,9 @@ function ChatModule () {
 		var ipToPing = words[1];
 		dns.reverse(ipToPing, function(err, hostnames) {
 			    if (hostnames)
-				  me.pingTheAddress(hostnames[0], ipToPing, dest);
+				  me.traceTheAddress(hostnames[0], ipToPing, dest);
 				else 
-				  me.pingTheAddress(ipToPing, ipToPing, dest);
+				  me.traceTheAddress(ipToPing, ipToPing, dest);
 			} );
 	  }
 	  else {
@@ -74,7 +89,7 @@ function ChatModule () {
 		   }
 		 console.log(`addresses: ${JSON.stringify(addresses)}`);
 		 var ipToPing = addresses[0];
-		 this.pingTheAddress(hostName, ipToPing, dest);
+		 this.traceTheAddress(hostName, ipToPing, dest);
 	  });
 	}
 }
