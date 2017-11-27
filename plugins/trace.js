@@ -36,7 +36,7 @@ function ChatModule () {
 
 		var session = ping.createSession ({packetSize: 64, retries: 1});
 
-		session.traceRoute (ipToPing, 10, feedCb, doneCb);
+		session.traceRoute (ipToPing, 30, feedCb, doneCb);
 	}
 
 	this.messageReceived = function(message, dest, source)
