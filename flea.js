@@ -63,9 +63,7 @@ client.addListener('message', function (from, to, message) {
 
            /* Notify the module of the new message */
            try {
-			   console.log(responseEngine[command]);
-			var response = responseEngine[command].messageReceived(message, otherParty, requestor);
-           
+				var response = responseEngine[command].messageReceived(message, otherParty, requestor);
 		   }
            catch (e) {
 			   console.log("Error notifying plugin of new message", e);
@@ -83,15 +81,20 @@ client.addListener('raw', function(message) {
 });
 
 /* Set up the special HELP command */
-function helpResponse(message) {
-  var response = "Commands Available:\n\n";
-  legalCommands.forEach(function(command) {
-    response += command + " " + helpText[command] + "\n";
-  });
-  return response;
+function HelpModule () {
+	
+	this.messageReceived = function(message, dest, source)
+	{
+	  var response = "Commands Available:\n\n";
+	  legalCommands.forEach(function(command) {
+		response += command + " " + helpText[command] + "\n";
+	  });
+      this.sendMessage(dest, response);
+    }
 }
-
-registerPlugin("HELP", helpResponse, "This command returns the help text");
+registerPlugin("HELP", new HelpModule(), "This command returns the help text");
 
 
 console.log("Ready!");
+
+

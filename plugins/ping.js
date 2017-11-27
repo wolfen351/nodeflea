@@ -1,19 +1,33 @@
 /* Ping module for flea */
 
 const dns = require('dns');
+var ping = require ("net-ping");
 
 function ChatModule () {
 	
     /* THIS METHOD WILL BE PROVIDED BY THE HOST - CALL IT TO SEND MESSAGES */
-	/*this.sendMessage = function(dest, message)
-	{
-		console.log(dest, " <- ", message);
-	}*/
+	/* this.sendMessage = function(dest, message)                          */
 
 	this.pingTheAddress = function(hostname, ipToPing)
 	{
+		var self = this;
 		var headline = "PING "+hostname+" ("+ipToPing+").";
 		this.sendMessage("#botville", headline);
+
+		var session = ping.createSession ({packetSize: 64, retries: 1});
+
+		for (var pingIteration = 0; pingIteration < 4; pingIteration++)
+		{
+			session.pingHost (ipToPing, function (error, target, sent, rcvd) {
+				var ms = rcvd - sent;
+				if (error)
+					self.sendMessage("#botville", target + ": " + error.toString() + "(ms=" + ms + ")");
+				else
+					//	64 bytes from 8.8.8.8: icmp_seq=1 ttl=57 time=17.0 ms
+					self.sendMessage("#botville", "64 bytes from " + target + ": time="+ms+" ms");
+					
+			});
+		}
 	}
 
 	this.messageReceived = function(message, dest, source)
