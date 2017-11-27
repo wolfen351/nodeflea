@@ -4,11 +4,23 @@ var responseEngine = { };
 var helpText = { };
 var config = require('./config.json');
 
-function registerPlugin(command, functionToRun, helpTextPart) {
-   responseEngine['@' + command.toUpperCase()] = functionToRun;
-   legalCommands.push('@' + command.toUpperCase());
-   helpText['@' + command.toUpperCase()] = helpTextPart;
-   console.log("Plugin for command " + command + " is ready!");
+function registerPlugin(command, chatmodule, helpTextPart) {
+	try {
+	   console.log("Plugin internals: ", chatmodule);
+	   responseEngine['@' + command.toUpperCase()] = chatmodule;
+	   legalCommands.push('@' + command.toUpperCase());
+	   helpText['@' + command.toUpperCase()] = helpTextPart;
+	   chatmodule.sendMessage = sendMessage;
+	   console.log("Plugin for command " + command + " is ready!");
+	}
+	catch (e) {
+		console.log("Error setting up module", e);
+	}
+}
+
+function sendMessage(destination, response) {
+   console.log(destination, " => ", response);
+   client.say(destination, response);
 }
 
 // INIT PLUGINS
@@ -18,7 +30,7 @@ var glob = require( 'glob' )
 glob.sync( './plugins/**/*.js' ).forEach( function( file ) {
   console.log("Init plugin: " + file);
   var plugin = require( path.resolve( file ) );
-  registerPlugin(plugin.commandName, plugin.responseFunction, plugin.helpText);
+  registerPlugin(plugin.commandName, plugin.module, plugin.helpText);
 });
 console.log("Plugins all loaded");
 
@@ -49,13 +61,16 @@ client.addListener('message', function (from, to, message) {
               requestor = from;
            }
 
-           /* Calc the response */
-           var response = responseEngine[command](message, otherParty, requestor);
-           console.log("Responding with " + response);
-
-           /* Respond to PM with PM and channel message with channel message */
-           client.say(otherParty, response);
-        }
+           /* Notify the module of the new message */
+           try {
+			   console.log(responseEngine[command]);
+			var response = responseEngine[command].messageReceived(message, otherParty, requestor);
+           
+		   }
+           catch (e) {
+			   console.log("Error notifying plugin of new message", e);
+		   }
+         }
     });
 });
 
@@ -63,6 +78,9 @@ client.addListener('error', function(message) {
     console.log('error: ', message);
 });
 
+client.addListener('raw', function(message) {
+	console.log("RAW: ", message.rawCommand, message.command, message.args.join(" "));
+});
 
 /* Set up the special HELP command */
 function helpResponse(message) {
