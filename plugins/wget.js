@@ -13,6 +13,7 @@ function ChatModule () {
     var http = require('http');
     var util = require('util');
     const URL = require('url');
+	var request = require('request');
 
     this.messageReceived = function(message, dest, source)
     {
@@ -20,16 +21,32 @@ function ChatModule () {
 
         var urlToProcess = words[1];
 
-        self.wgetUrl(dest, urlToProcess);
+        self.wgetUrl(dest, urlToProcess, 0);
     }
 
-    this.wgetUrl = function(dest, urlToProcess)
+    this.wgetUrl = function(dest, urlToProcess, level)
     {
-        var urlToFetch = URL.parse( urlToProcess );
-        var redirLocation;
-        var options = {method: 'HEAD', host: urlToFetch.host, port: urlToFetch.port, path: urlToFetch.pathname};
-        var req = http.request(options, function(res) {
+		// prevent infinite recursion
+		level++;
+		if (level >= 5) 
+		  return;
+		  
+		var url = URL.parse(urlToProcess);
+		var urlString = URL.format(url);
+		if (!url.protocol)
+		  urlString = "http://" + URL.format(url);
+		  
+		console.log("Will get url header:" + urlString);  
+		request(urlString, {method: 'HEAD', followRedirect: false}, function (err, res, body){   
+			var redirLocation;
             var extra = "";
+            
+            if (err)
+            {
+				self.sendMessage(dest, err);
+				return;
+			}
+            
             if (res.headers["content-length"])
                 extra = " - " + res.headers["content-length"] + " bytes";
             if (res.headers["location"])
@@ -39,9 +56,8 @@ function ChatModule () {
             }
             self.sendMessage(dest, "Status: " + res.statusCode + " - " + res.statusMessage + " " + extra);
             if (redirLocation)
-              self.wgetUrl(dest, redirLocation);
-        });
-        req.end();
+              self.wgetUrl(dest, redirLocation, level);
+		});
     }
 }
 
