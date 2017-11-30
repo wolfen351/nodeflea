@@ -15,6 +15,7 @@ function ChatModule () {
 		var words = message.substr(message.indexOf(" ") + 1);	
 		
 		this.sendMessage(dest, "Shutting down for maintenance: " + words);
+		process.exit( );
 	}
 
 }
