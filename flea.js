@@ -11,6 +11,7 @@ function registerPlugin(command, chatmodule, helpTextPart) {
 	   legalCommands.push('@' + command.toUpperCase());
 	   helpText['@' + command.toUpperCase()] = helpTextPart;
 	   chatmodule.sendMessage = sendMessage;
+	   chatmodule.sendRaw = sendRaw;
 	   console.log("Plugin for command " + command + " is ready!");
 	}
 	catch (e) {
@@ -21,6 +22,11 @@ function registerPlugin(command, chatmodule, helpTextPart) {
 function sendMessage(destination, response) {
    console.log(destination, " => ", response);
    client.say(destination, response);
+}
+
+function sendRaw(rawmessage, arg1) {
+   console.log("RAW MESSAGE: ", rawmessage, arg1);
+   client.send(rawmessage, arg1);
 }
 
 // INIT PLUGINS
