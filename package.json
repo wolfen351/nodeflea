@@ -11,6 +11,7 @@
   "dependencies": {
     "checkservice": "^1.0.1",
     "http": "0.0.0",
+    "ip-subnet-calculator": "^1.1.8",
     "irc": "^0.5.2",
     "moment": "^2.19.2",
     "net-ping": "^1.2.1",
