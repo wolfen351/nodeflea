@@ -13,15 +13,15 @@ function ChatModule () {
 	{
 	    var words = message.split(' ');
 	    var channel = words[1];
-		this.sendMessage(dest, "Thanks for the invite to channel: " + channel);
-		this.sendRaw("JOIN", channel);
+		this.sendMessage(dest, "Bye bye! (Leaving " + dest + ")");
+		this.sendRaw("PART", dest);
 	}
 
 }
 
-exports.commandName = 'invite';
+exports.commandName = 'leave';
 exports.module = new ChatModule();
-exports.helpText = '#channel - Invite the bot to join a channel ';
+exports.helpText = '- Make the bot leave the current chanel ';
 
 
 
