@@ -8,10 +8,8 @@ function ChatModule() {
         pluginLogger = logger.getLogger(exports.commandName);
     };
     /* THIS METHOD WILL BE PROVIDED BY THE HOST - CALL IT TO SEND MESSAGES */
-    /* this.sendMessage = function(dest, message)                          */
 
     var self = this;
-
     function doneCb(error, target) {
         if (error)
             self.sendMessage("#botville", target + ": " + error.toString());

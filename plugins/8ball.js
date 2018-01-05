@@ -2,19 +2,11 @@
 var pluginLogger;
 var pluginDAO;
 
-//function setLogger(test) {
-//    pluginLogger = test.getLogger('8ball');
-//}
-
-//function init(logger){
-//    console.log('f');
-//}
 
 function ChatModule() {
     this.init = function (logger) {
         pluginLogger = logger.getLogger(exports.commandName);
     };
-//    var pluginLogger = logger.getLogger(exports.commandName);
     /* THIS METHOD WILL BE PROVIDED BY THE HOST - CALL IT TO SEND MESSAGES */
     var words = ["It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it",
         "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes",

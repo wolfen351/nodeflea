@@ -7,7 +7,6 @@ function ChatModule() {
         pluginLogger = logger.getLogger(exports.commandName);
     };
     /* THIS METHOD WILL BE PROVIDED BY THE HOST - CALL IT TO SEND MESSAGES */
-    /* this.sendMessage = function(dest, message)                          */
 
     this.messageReceived = function (message, dest, source)
     {

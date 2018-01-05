@@ -7,10 +7,6 @@ function ChatModule() {
         pluginLogger = logger.getLogger(exports.commandName);
     };
     /* THIS METHOD WILL BE PROVIDED BY THE HOST - CALL IT TO SEND MESSAGES */
-    /*this.sendMessage = function(dest, message)
-     {
-     logger.info(dest, " <- ", message);
-     }*/
 
     /* We're using "YYYY/MM/DD HH:mm:ss.SSS" because ISO8601*/
     var dtformat = "YYYY/MM/DD HH:mm:ss.SSS";

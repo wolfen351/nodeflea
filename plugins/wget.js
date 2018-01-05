@@ -1,15 +1,10 @@
 /* wget module for flea */
 
-
 function ChatModule() {
     this.init = function (logger) {
         pluginLogger = logger.getLogger(exports.commandName);
     };
     /* THIS METHOD WILL BE PROVIDED BY THE HOST - CALL IT TO SEND MESSAGES */
-    /*this.sendMessage = function(dest, message)
-     {
-     logger.info(dest, " <- ", message);
-     }*/
 
     var self = this;
     var http = require('http');
