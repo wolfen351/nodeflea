@@ -1,14 +1,38 @@
 {
     "server": "hub.jawug.org.za",
     "port": 6667,
-    "botName": "nodeFlea",
-    "username": "nodeFlea",
-    "realname": "nodeFlea",
-
+    "botName": "nodeFleaV2",
+    "username": "nodeFleaV2",
+    "realname": "nodeFleaV2",
 
     "channels": ["#botville"],
     "nickserv": "nickserv",
     "nickservPassword": "",
 
-    "tls": false
+    "tls": false,
+
+    "logging": {
+        "appenders": {
+            "out": {
+                "type": "console"
+            },
+            "task": {
+                "type": "file",
+                "filename": "logs/nodeFlea.log",
+                "maxLogSize": 104857,
+                "backups": 10
+            }
+        },
+        "categories": {
+            "default": {
+                "appenders": ["out", "task"],
+                "level": "debug"
+            },
+            "task": {
+                "appenders": ["task"],
+                "level": "error"
+            }
+        }
+    }
 }
+
