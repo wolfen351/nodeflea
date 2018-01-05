@@ -15,9 +15,7 @@ logger.info('Starting...');
 
 function registerPlugin(command, chatmodule, helpTextPart) {
     try {
-
-        logger.info(chatmodule);
-        logger.debug("Plugin internals: ", chatmodule);
+//        logger.debug("Plugin internals: ", chatmodule);
         if (chatmodule.init) {
             chatmodule.init(log4js);
         }
@@ -36,18 +34,20 @@ function sendMessage(destination, response) {
     client.say(destination, response);
 }
 
-// INIT PLUGINS
-var glob = require('glob')
-        , path = require('path');
+function sendRaw(rawmessage, arg1) {
+    logger.info("RAW MESSAGE: ", rawmessage, arg1);
+    client.send(rawmessage, arg1);
+}
 
+// INIT PLUGINS
+var glob = require('glob'), path = require('path');
 glob.sync('./plugins/**/*.js').forEach(function (file) {
     logger.info("Init plugin: " + file);
     var plugin = require(path.resolve(file));
-//    plugin.setLogger(log4js);
     registerPlugin(plugin.commandName, plugin.module, plugin.helpText);
 });
-logger.info("Plugins all loaded");
 
+logger.info("Plugins all loaded");
 // INIT IRC
 var irc = require('irc');
 var client = new irc.Client(config.server, config.botName, {
@@ -58,14 +58,12 @@ var client = new irc.Client(config.server, config.botName, {
 
 client.addListener('message', function (from, to, message) {
     logger.info(from + ' => ' + to + ': ' + message);
-
     /* Check each command to see if it matches the message */
     legalCommands.forEach(function (command)
     {
         /* Detect command */
         if (message.toUpperCase().indexOf(command.toUpperCase()) > -1) {
             logger.debug("Command Detected:" + command + " from user " + from);
-
             /* Calc the other party */
             var otherParty = from;
             var requestor = to;
@@ -84,20 +82,14 @@ client.addListener('message', function (from, to, message) {
         }
     });
 });
-
 client.addListener('error', function (message) {
     logger.info('error: ', message);
 });
-
 client.addListener('raw', function (message) {
     logger.debug("RAW: ", message.rawCommand, message.command, message.args.join(" "));
 });
-
 /* Set up the special HELP command */
 function HelpModule() {
-//    this.init = function (logger) {
-//        console.log('f');
-//    };
     this.messageReceived = function (message, dest, source)
     {
         var response = "Commands Available:\n\n";
@@ -108,5 +100,4 @@ function HelpModule() {
     };
 }
 registerPlugin("HELP", new HelpModule(), "This command returns the help text");
-
 logger.info("Ready!");

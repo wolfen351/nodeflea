@@ -38,10 +38,6 @@ function ChatModule() {
             var redirLocation;
             var extra = "";
 
-//            pluginLogger.error("err: " + err);
-            pluginLogger.error("res: " + JSON.stringify(res));
-//            pluginLogger.error("body: " + body);
-
             if (err)
             {
                 self.sendMessage(dest, err);
