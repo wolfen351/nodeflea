@@ -1,0 +1,11 @@
+{
+    "logging" : {
+		"appenders": { 
+		    "console": { "type": "console" },
+		    "file": { "type": "file", "filename": "logs/nodeflea.log" } 
+			},
+		"categories": { 
+		    "default": { "appenders": ["file", "console"], "level": "debug" } 
+		}
+	}
+}

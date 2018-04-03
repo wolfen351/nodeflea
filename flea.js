@@ -1,6 +1,6 @@
 var config = require('./config.json');
 var log4js = require('log4js');
-var logger = log4js.getLogger('nodeFlea');
+var logger = log4js.getLogger();
 // INIT COMMAND STORAGE
 var legalCommands = [];
 var responseEngine = {};
