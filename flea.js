@@ -17,7 +17,7 @@ function registerPlugin(command, chatmodule, helpTextPart) {
     try {
 //        logger.debug("Plugin internals: ", chatmodule);
         if (chatmodule.init) {
-            chatmodule.init(log4js);
+            chatmodule.init(log4js, config.plugin[command]);
         }
         responseEngine['@' + command.toUpperCase()] = chatmodule;
         legalCommands.push('@' + command.toUpperCase());

@@ -12,5 +12,10 @@
 	"botname" : "nodeflea",
 	"username" : "nodeflea",
 	"realname" : "nodeflea",
-	"channels" : ["#botville"]
+	"channels" : ["#botville"],
+	"plugin" : {
+	  "ana" : {
+	      "kmzurl" : "http://www.wug.za.net/newkmz.php?wug=1&download=Download+KMZ"
+	  }
+	}
 }  
