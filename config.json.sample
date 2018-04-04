@@ -7,5 +7,10 @@
 		"categories": { 
 		    "default": { "appenders": ["file", "console"], "level": "debug" } 
 		}
-	}
+	},
+	"server" : "hub.jawug.org.za",
+	"botname" : "nodeflea",
+	"username" : "nodeflea",
+	"realname" : "nodeflea",
+	"channels" : ["#botville"],
 }

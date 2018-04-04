@@ -50,7 +50,7 @@ glob.sync('./plugins/**/*.js').forEach(function (file) {
 logger.info("Plugins all loaded");
 // INIT IRC
 var irc = require('irc');
-var client = new irc.Client(config.server, config.botName, {
+var client = new irc.Client(config.server, config.botname, {
     userName: config.username,
     realName: config.realname,
     channels: config.channels
