@@ -1,21 +1,29 @@
 {
-    "logging" : {
-		"appenders": { 
-		    "console": { "type": "console" },
-		    "file": { "type": "file", "filename": "logs/nodeflea.log" } 
-			},
-		"categories": { 
-		    "default": { "appenders": ["file", "console"], "level": "debug" } 
-		}
-	},
-	"server" : "hub.jawug.org.za",
-	"botname" : "nodeflea",
-	"username" : "nodeflea",
-	"realname" : "nodeflea",
-	"channels" : ["#botville"],
-	"plugin" : {
-	  "ana" : {
-	      "kmzurl" : "http://www.wug.za.net/newkmz.php?wug=1&download=Download+KMZ"
-	  }
-	}
+    "logging": {
+        "appenders": { 
+            "console": {
+                "type": "console"
+            },
+            "file": {
+                "type": "file",
+                "filename": "logs/nodeflea.log"
+            } 
+        },
+        "categories": { 
+            "default": {
+                "appenders": ["file", "console"],
+                "level": "debug"
+            } 
+        }
+    },
+    "server": "hub.jawug.org.za",
+    "botname": "nodeflea",
+    "username": "nodeflea",
+    "realname": "nodeflea",
+    "channels": ["#botville"],
+    "plugin": {
+        "ana": {
+            "kmzurl": "http://www.wug.za.net/newkmz.php?wug=1&download=Download+KMZ"
+        }
+    }
 }  
