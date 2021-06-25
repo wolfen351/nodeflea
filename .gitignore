@@ -3,3 +3,5 @@
 /nbproject
 /package-lock.json
 /data
+documentation/
+server.xml
