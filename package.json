@@ -17,7 +17,7 @@
         "http": "0.0.0",
         "ip-subnet-calculator": "^1.1.8",
         "irc": "^0.5.2",
-        "log4js": "^6.3.0",
+        "log4js": "^6.4.0",
         "mkdirp": "^1.0.4",
         "moment": "^2.29.1",
         "net-ping": "^1.2.3",
